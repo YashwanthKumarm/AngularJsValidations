@@ -1,0 +1,116 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<script src="~/Scripts/bootstrap.js"></script>
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/angular.js"></script>
+<script type="text/javascript">
+    var app = angular.module('myapp', []);
+    app.controller('validatecontrol', function ($scope) {
+        $scope.services = [
+                            { ServiceID: 1, ServiceName: 'Govt Service' },
+                            { ServiceID: 2, ServiceName: 'Private Service' },
+                            { ServiceID: 3, ServiceName: 'Own Job' }
+        ];
+        $scope.EmailPattern = /^([\w-]+(?:\.[\w-]+)*)@@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+        $scope.MobilePattern = /^(7|8|9)\d{9}$/;
+        //Minimum eight and maximum 10 characters, atleast one uppercase letter, one lowercase letter, one number and one special character
+        $scope.PasswordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@@$!%*?&])[A-Za-z\d$@@$!%*?&]{8,10}$/;
+    })
+</script>
+<h2>Index</h2>
+<div class="container">
+    <form class="form-horizontal" ng-app="myapp" ng-controller="validatecontrol" name="frmApplication" novalidate>
+        <div class="form-group">
+            <div class="col-sm-1">
+                <label>FirstName&nbsp;&nbsp;<span ng-show="frmApplication.firstName.$error.required" style="color:red;">*</span></label>
+            </div>
+            <div class="col-sm-4">
+                <input type="text" name="firstName" ng-minlength="6" ng-maxlength="15" ng-model="Application.FirstName" class="form-control" placeholder="Enter FirstName" required />
+            </div>
+            <div class="col-sm-4">
+                <span ng-show="frmApplication.firstName.$dirty && frmApplication.firstName.$error.minlength">The FirstName should be minimum 6 characters</span>
+            </div>
+            <div class="col-sm-4">
+                <span ng-show="frmApplication.firstName.$dirty && frmApplication.firstName.$error.maxlength">The FirstName should be maximum 15 characters</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-1">
+                <label>LastName&nbsp;&nbsp;<span ng-show="frmApplication.lastName.$error.required" style="color:red;">*</span></label>
+            </div>
+            <div class="col-sm-4">
+                <input type="text" name="lastName" ng-minlength="6" ng-maxlength="15" ng-model="Application.LastName" class="form-control" placeholder="Enter LastName" required />
+            </div>
+            <div class="col-sm-4">
+                <span ng-show="frmApplication.lastName.$dirty && frmApplication.lastName.$error.minlength">The LastName should be minimum 6 characters</span>
+            </div>
+            <div class="col-sm-4">
+                <span ng-show="frmApplication.lastName.$dirty && frmApplication.lastName.$error.maxlength">The LastName should be maximum 15 characters</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-1">
+                <label>Service&nbsp;&nbsp;<span ng-show="frmApplication.service_id.$error.required" style="color:red;">*</span></label>
+            </div>
+            <div class="col-sm-4">
+                <select name="service_id" class="form-control" ng-model="Application.ServiceID"
+                        ng-options="service.ServiceID as service.ServiceName for service in services" required>
+                    <option value="">Select Service</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-1">
+                <label>UserName&nbsp;&nbsp;<span ng-show="frmApplication.username.$error.required" style="color:red;">*</span></label>
+            </div>
+            <div class="col-sm-4">
+                <input type="text" name="username" ng-pattern="/^[a-zA-Z0-9]*$/" class="form-control" ng-model="Application.UserName" placeholder="Enter Username" required />
+            </div>
+            <div class="col-sm-4">
+                <span ng-show="frmApplication.username.$error.pattern" class="help-block">Spaces & Special characters not allowed</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-1">
+                <label>Email&nbsp;&nbsp;<span ng-show="frmApplication.email.$error.required" style="color:red;">*</span></label>
+            </div>
+            <div class="col-sm-4">
+                <input type="text" name="email" ng-pattern="EmailPattern" class="form-control" ng-model="Application.Email" placeholder="Enter Your Mail" required />
+            </div>
+            <div class="col-sm-4">
+                <span ng-show="frmApplication.email.$error.pattern" class="help-block">Enter valid Email</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-1">
+                <label>Mobile&nbsp;&nbsp;<span ng-show="frmApplication.mobile.$error.required" style="color:red;">*</span></label>
+            </div>
+            <div class="col-sm-4">
+                <input type="text" name="mobile" ng-pattern="MobilePattern" class="form-control" ng-model="Application.mobile" placeholder="Enter mobile Number" required />
+            </div>
+            <div class="col-sm-4">
+                <span ng-show="frmApplication.mobile.$error.pattern">Enter valid Mobile number</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-1">
+                <label>Password&nbsp;&nbsp;<span ng-show="frmApplication.password.$error.required" style="color:red;">*</span></label>
+            </div>
+            <div class="col-sm-4">
+                <input type="password" name="password" ng-pattern="PasswordPattern" class="form-control" ng-model="Application.password" placeholder="Enter Password" required />
+            </div>
+            <div class="col-sm-4">
+                <span ng-show="frmApplication.password.$error.pattern">Password should contain Minimum 8 and maximum 10 characters, atleast 1 uppercase letter,1 lowercase letter, 1 number and 1 special character</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <button type="button" ng-disabled="frmApplication.$invalid||frmApplication.$pristine" ng-click="SaveData(Application)" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+
